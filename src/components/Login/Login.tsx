@@ -1,27 +1,25 @@
 import React, { useState } from 'react'
-import SignUpForm from './SignUpForm'
-import { toast } from 'react-hot-toast';
+import LoginForm from './LoginForm'
 import axios from 'axios';
+import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
-const Home = () => {
+const Login = () => {
 
     const initialFormState = {
-        userName: '',
         email: '',
-        phoneNumber: '',
         password: ''
     };
 
     const initialFormErrors = {
-        userName: { message: '', inputClass: '', feedbackClass: '' },
         email: { message: '', inputClass: '', feedbackClass: '' },
-        phoneNumber: { message: '', inputClass: '', feedbackClass: '' },
         password: { message: '', inputClass: '', feedbackClass: '' }
     };
 
     const [formData, setFormData] = useState(initialFormState);
-
     const [formErrors, setFormErrors] = useState(initialFormErrors);
+
+    const router = useRouter();
 
     const clearForm = async () => {
         setFormData(initialFormState);
@@ -31,9 +29,9 @@ const Home = () => {
     const submitForm = async (e: FormDataEvent) => {
         try {
             e.preventDefault();
-            const response = await axios.post('/api/users/signup', formData);
+            const response = await axios.post('/api/users/login', formData);
             if (response && response.data.success) {
-                toast.success('Form Submitted');
+                toast.success('Login Successfully');
                 clearForm();
             }
         } catch (error: any) {
@@ -43,8 +41,8 @@ const Home = () => {
 
     return (
         <main className='grow break-all flex justify-center items-center'>
-            {/* Signup Form Component */}
-            <SignUpForm
+            {/* Login Form Component */}
+            <LoginForm
                 submitForm={submitForm}
                 formData={formData}
                 setFormData={setFormData}
@@ -54,4 +52,4 @@ const Home = () => {
     )
 }
 
-export default Home
+export default Login

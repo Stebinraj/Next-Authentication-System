@@ -6,10 +6,12 @@ import Navbar from "@/components/Layouts/Navbar";
 
 export default function HomePage() {
     return (
-        <Layouts
-            navbar={<Navbar />}
-            main={<Home />}
-            footer={<Footer />}
-        />
+        <>
+            <Layouts
+                navbar={<Navbar />}
+                main={<Home />}
+                footer={<Footer />}
+            />
+        </>
     )
 }

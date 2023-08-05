@@ -26,13 +26,19 @@ export const POST = async (request: NextRequest) => {
 
         const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!, { expiresIn: '12h' });
 
-        return NextResponse.json({
+        const response = NextResponse.json({
             message: 'Login Successfully', success: true
-        }).cookies.set('token', token, {
-            httpOnly: true, expires: Date.now() + 43200000
         });
 
+        response.cookies.set('token', token, {
+            httpOnly: true, expires: Date.now() + 43200000,
+            secure: true, sameSite: 'strict'
+        });
+
+        return response;
+
     } catch (error: any) {
-        return NextResponse.json({ message: error.message }, { status: 500 })
+        console.log(error);
+        return NextResponse.json({ message: error.message })
     }
 }
