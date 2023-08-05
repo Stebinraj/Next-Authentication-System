@@ -3,6 +3,7 @@ import LoginForm from './LoginForm'
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const Login = () => {
 
@@ -40,7 +41,7 @@ const Login = () => {
     }
 
     return (
-        <main className='grow break-all flex justify-center items-center'>
+        <main className='grow break-all flex justify-center items-center flex-col'>
             {/* Login Form Component */}
             <LoginForm
                 submitForm={submitForm}
@@ -48,6 +49,8 @@ const Login = () => {
                 setFormData={setFormData}
                 formErrors={formErrors}
             />
+
+            <p className='mt-2'>Need and account? <Link href={'/'} replace={true} className='text-decoration-none'>SignUp</Link></p>
         </main>
     )
 }
