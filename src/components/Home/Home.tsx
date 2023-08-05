@@ -6,9 +6,9 @@ import axios from 'axios';
 const Home = () => {
 
     const initialFormState = {
-        userName: '',
+        // userName: '',
         email: '',
-        phoneNumber: '',
+        // phoneNumber: '',
         password: ''
     };
 
@@ -31,7 +31,7 @@ const Home = () => {
     const submitForm = async (e: FormDataEvent) => {
         try {
             e.preventDefault();
-            const response = await axios.post('/api/users/signup', formData);
+            const response = await axios.post('/api/users/login', formData);
             if (response && response.data.success) {
                 toast.success('Form Submitted');
                 clearForm();
