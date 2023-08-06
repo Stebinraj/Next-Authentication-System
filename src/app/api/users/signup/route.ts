@@ -1,6 +1,10 @@
 import userModel from "@/models/UserModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from 'bcrypt';
+import { connectMongoDB } from "@/dbConfig/connectMongoDB";
+import { sendMail } from "@/helpers/mailer";
+
+connectMongoDB();
 
 export const POST = async (request: NextRequest) => {
     try {
@@ -18,6 +22,8 @@ export const POST = async (request: NextRequest) => {
         const newUser = new userModel({ userName, email, phoneNumber, password: hashedPassword });
 
         await newUser.save();
+
+        await sendMail(newUser.email, process.env.EMAIL_TYPE_VERIFY, newUser._id);
 
         return NextResponse.json({ message: "User created successfully", success: true });
     } catch (error: any) {

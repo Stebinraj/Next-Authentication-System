@@ -34,6 +34,7 @@ const Login = () => {
             if (response && response.data.success) {
                 toast.success('Login Successfully');
                 clearForm();
+                router.replace('/dashboard');
             }
         } catch (error: any) {
             console.error(error.message);

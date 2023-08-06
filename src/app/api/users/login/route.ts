@@ -2,6 +2,9 @@ import userModel from "@/models/UserModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { connectMongoDB } from "@/dbConfig/connectMongoDB";
+
+connectMongoDB();
 
 export const POST = async (request: NextRequest) => {
     try {
@@ -26,7 +29,7 @@ export const POST = async (request: NextRequest) => {
 
         const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!, { expiresIn: '12h' });
 
-        const response = NextResponse.json({
+        const response =  NextResponse.json({
             message: 'Login Successfully', success: true
         });
 
