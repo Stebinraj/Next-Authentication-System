@@ -5,7 +5,8 @@ import jwt from 'jsonwebtoken';
 export function middleware(request: NextRequest) {
     try {
         const path = request.nextUrl.pathname;
-        const isPublicPath = path === '/' || path === '/login' || path === '/verifyemail';
+        const isPublicPath = path === '/' || path === '/login' ||
+            path === '/verifyemail' || path === '/resetpassword' || path === '/updatepassword';
 
         const token: any = request.cookies.get('token')?.value;
 
@@ -27,6 +28,8 @@ export const config = {
         '/',
         '/dashboard',
         '/login',
-        '/verifyemail'
+        '/verifyemail',
+        '/resetpassword',
+        '/updatepassword'
     ]
 };

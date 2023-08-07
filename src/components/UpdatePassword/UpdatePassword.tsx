@@ -1,44 +1,58 @@
-import React, { useState } from 'react'
-import ResetPasswordForm from './ResetPasswordForm';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react'
 import { toast } from 'react-hot-toast';
+import UpdatePasswordForm from './UpdatePasswordForm';
 
-const ResetPassword = () => {
+const UpdatePassword = () => {
 
     const initialFormState = {
-        email: '',
+        password: ''
     };
 
     const initialFormErrors = {
-        email: { message: '', inputClass: '', feedbackClass: '' }
+        password: { message: '', inputClass: '', feedbackClass: '' }
     };
 
     const [formData, setFormData] = useState(initialFormState);
     const [formErrors, setFormErrors] = useState(initialFormErrors);
+    const [token, setToken] = useState();
+
+    const router = useRouter();
 
     const clearForm = async () => {
         setFormData(initialFormState);
         setFormErrors(initialFormErrors)
     }
 
-    const submitForm = async (e: any) => {
+    const submitForm = async (e: FormDataEvent) => {
         try {
             e.preventDefault();
-            const response = await axios.post('/api/users/resetpassword', formData);
+            const response = await axios.post('/api/users/updatepassword', {
+                token: token,
+                password: formData.password
+            });
             if (response && response.data.success) {
-                toast.success('Password reset mailed Successfully');
+                toast.success('Password Updated Successfully');
                 clearForm();
+                router.replace('/login');
             }
         } catch (error: any) {
             console.error(error.message);
         }
     }
 
+    useEffect(() => {
+        const urlToken: any = new URLSearchParams(window.location.search).get('token');
+        setToken(urlToken || '');
+    }, [token]);
+
+
     return (
         <>
             <main className='grow break-all flex justify-center items-center flex-col'>
-                {/* Reset Password form component */}
-                <ResetPasswordForm
+                {/* Update password form component */}
+                <UpdatePasswordForm
                     submitForm={submitForm}
                     formData={formData}
                     setFormData={setFormData}
@@ -49,4 +63,4 @@ const ResetPassword = () => {
     )
 }
 
-export default ResetPassword
+export default UpdatePassword

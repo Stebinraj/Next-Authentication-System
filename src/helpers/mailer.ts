@@ -43,7 +43,7 @@ export const sendMail = async (email: any, emailType: any, userId: any) => {
             to: email,
             subject: emailType === EMAIL_TYPE_VERIFY ? "Verify your email" : EMAIL_TYPE_RESET && "Reset your password",
             html: `<p>Click <a href=${emailType === EMAIL_TYPE_VERIFY ? `${DOMAIN}/verifyemail?token=${hashedToken}`
-                : emailType === EMAIL_TYPE_RESET && `${DOMAIN}/resetpassword?token=${hashedToken}`} replace={true}>here
+                : emailType === EMAIL_TYPE_RESET && `${DOMAIN}/updatepassword?token=${hashedToken}`} replace={true}>here
                 </a>to ${emailType === EMAIL_TYPE_VERIFY ? 'Verify'
                     : emailType === EMAIL_TYPE_RESET && 'Reset'}
                 </p>`
