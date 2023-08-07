@@ -5,12 +5,19 @@ import nodemailer from 'nodemailer';
 export const sendMail = async (email: any, emailType: any, userId: any) => {
     try {
         const salt = await genSalt(10);
+        if (!salt) {
+            throw new Error('Error While Generating Salt');
+        }
+
         const hashedToken = await bcrypt.hash(userId.toString(), salt);
+        if (!hashedToken) {
+            throw new Error('Error While Hashing Token');
+        }
 
         const { EMAIL_TYPE_VERIFY, EMAIL_TYPE_RESET, DOMAIN } = process.env
 
         if (emailType === EMAIL_TYPE_VERIFY) {
-            await userModel.findByIdAndUpdate(userId, {
+            const verify = await userModel.findByIdAndUpdate(userId, {
                 $set: {
                     verifyToken: hashedToken,
                     verifyTokenExpiry: Date.now() + 43200000
@@ -18,8 +25,11 @@ export const sendMail = async (email: any, emailType: any, userId: any) => {
             }, {
                 new: true
             });
+            if (!verify) {
+                throw new Error('Verify Token Not Generated');
+            }
         } else if (emailType === EMAIL_TYPE_RESET) {
-            await userModel.findByIdAndUpdate(userId, {
+            const reset = await userModel.findByIdAndUpdate(userId, {
                 $set: {
                     forgotPasswordToken: hashedToken,
                     forgotPasswordTokenExpiry: Date.now() + 43200000
@@ -27,6 +37,9 @@ export const sendMail = async (email: any, emailType: any, userId: any) => {
             }, {
                 new: true
             });
+            if (!reset) {
+                throw new Error('Reset Token Not Generated');
+            }
         }
 
         const transport = nodemailer.createTransport({
@@ -49,8 +62,12 @@ export const sendMail = async (email: any, emailType: any, userId: any) => {
                 </p>`
         }
 
-        await transport.sendMail(mailOptions);
+        const send = await transport.sendMail(mailOptions);
+
+        if (!send) {
+            throw new Error('Email Not Send');
+        }
     } catch (error: any) {
-        throw new Error(error.message);
+        throw new Error(error);
     }
 }

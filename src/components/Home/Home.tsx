@@ -38,7 +38,21 @@ const Home = () => {
                 clearForm();
             }
         } catch (error: any) {
-            console.error(error.message);
+            setFormErrors(initialFormErrors);
+            if (error.response && Array.isArray(error.response.data.message)) {
+                for (let i of error.response.data.message) {
+                    let { message, field } = i;
+                    setFormErrors((formErrors) => ({
+                        ...formErrors,
+                        [field]: {
+                            message: message, inputClass: 'is-invalid',
+                            feedbackClass: 'invalid-feedback'
+                        }
+                    }));
+                }
+            } else {
+                toast.error(error.response.data.message);
+            }
         }
     }
 
