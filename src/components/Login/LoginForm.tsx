@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 const LoginForm = ({ submitForm, formData, setFormData, formErrors }: any) => {
@@ -24,6 +25,8 @@ const LoginForm = ({ submitForm, formData, setFormData, formErrors }: any) => {
                                 <small className={formErrors.password.feedbackClass}>{formErrors.password.message}</small>
                             )}
                         </div>
+
+                        <Link href={'/'} className='text-end text-decoration-none'><small>Forgot password?</small></Link>
 
                         <div className="form-group text-center mt-2">
                             <button type='submit' className='bg-blue-700 text-white px-4 py-2 rounded-3xl'>Submit</button>
