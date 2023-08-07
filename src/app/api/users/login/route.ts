@@ -4,10 +4,10 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { connectMongoDB } from "@/dbConfig/connectMongoDB";
 
-connectMongoDB();
-
 export const POST = async (request: NextRequest) => {
     try {
+        await connectMongoDB();
+
         const { email, password } = await request.json();
 
         const user = await userModel.findOne({ email });
@@ -29,7 +29,7 @@ export const POST = async (request: NextRequest) => {
 
         const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!, { expiresIn: '12h' });
 
-        const response =  NextResponse.json({
+        const response = NextResponse.json({
             message: 'Login Successfully', success: true
         });
 

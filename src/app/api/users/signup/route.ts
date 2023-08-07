@@ -1,13 +1,13 @@
 import userModel from "@/models/UserModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from 'bcrypt';
-import { connectMongoDB } from "@/dbConfig/connectMongoDB";
 import { sendMail } from "@/helpers/mailer";
-
-connectMongoDB();
+import { connectMongoDB } from "@/dbConfig/connectMongoDB";
 
 export const POST = async (request: NextRequest) => {
     try {
+        await connectMongoDB();
+
         const { userName, email, phoneNumber, password } = await request.json();
 
         const user = await userModel.findOne({ email, phoneNumber });
