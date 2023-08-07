@@ -8,18 +8,34 @@ export const POST = async (request: NextRequest) => {
     try {
         await connectMongoDB();
 
+        const errors: any[] = [];
+
         const { email, password } = await request.json();
+
+        if (!email) {
+            errors.push({ message: 'Email Required', field: 'email' });
+        }
+
+        if (!password) {
+            errors.push({ message: 'Password Required', field: 'password' });
+        }
+
+        if (errors.length > 0) {
+            throw errors;
+        }
 
         const user = await userModel.findOne({ email });
 
         if (!user) {
-            return NextResponse.json({ error: "User does not exists" }, { status: 400 });
+            errors.push({ message: 'Email does not exists', field: 'email' });
+            throw errors;
         }
 
         const validPassword = await bcrypt.compare(password, user.password);
 
         if (!validPassword) {
-            return NextResponse.json({ error: "Invalid Password" }, { status: 400 });
+            errors.push({ message: 'Invalid Password', field: 'password' });
+            throw errors;
         }
 
         const tokenData = {
@@ -28,6 +44,10 @@ export const POST = async (request: NextRequest) => {
         }
 
         const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!, { expiresIn: '12h' });
+
+        if (!token) {
+            throw new Error('Login Data Encryption failed');
+        }
 
         const response = NextResponse.json({
             message: 'Login Successfully', success: true
@@ -41,7 +61,6 @@ export const POST = async (request: NextRequest) => {
         return response;
 
     } catch (error: any) {
-        console.log(error);
-        return NextResponse.json({ message: error.message })
+        return NextResponse.json({ message: error.message || error }, { status: 500 });
     }
 }
