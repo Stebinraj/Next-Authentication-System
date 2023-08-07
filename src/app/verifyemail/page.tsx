@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 
 const VerifyEmailPage = () => {
 
-    const [token, setToken] = useState('');
+    const [token, setToken] = useState();
     const [verified, setVerified] = useState(false);
     const [error, setError] = useState(false);
     const router = useRouter();
@@ -28,7 +28,7 @@ const VerifyEmailPage = () => {
                 console.error(error.message);
             }
         }
-        if (token.length > 0) {
+        if (token) {
             verifyUserEmail();
         }
     }, [token]);
