@@ -31,7 +31,7 @@ const Login = () => {
         try {
             e.preventDefault();
             const response = await axios.post('/api/users/login', formData);
-            if (response && response.data.success) {
+            if (response && response.data.message) {
                 toast.success(response.data.message);
                 clearForm();
                 router.replace('/dashboard');

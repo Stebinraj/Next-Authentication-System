@@ -6,7 +6,7 @@ export const GET = (request: NextRequest) => {
 
         const token = request.cookies.get('token')?.name || request.cookies.get('token')?.value
 
-        const response = NextResponse.json({ message: 'Logout Succcessfull', success: true });
+        const response = NextResponse.json({ message: 'Logout Succcessfully'});
 
         if (!token) {
             for (let i of cookies) {

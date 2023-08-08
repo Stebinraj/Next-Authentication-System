@@ -8,23 +8,31 @@ export const POST = async (request: NextRequest) => {
 
         const { token } = await request.json();
 
+        if (!token) {
+            throw new Error('No token found');
+        }
+
         const user = await userModel.findOne({
             verifyToken: token,
             verifyTokenExpiry: { $gt: Date.now() }
         });
 
         if (!user) {
-            return NextResponse.json({ message: 'Token Invalid', error: true }, { status: 400 });
+            throw new Error('Token invalid');
         }
 
         user.isVerified = true;
         user.verifyToken = undefined;
         user.verifyTokenExpiry = undefined;
 
-        await user.save();
+        const saved = await user.save();
 
-        return NextResponse.json({ message: "Email verified successfully", success: true });
+        if (!saved) {
+            throw new Error('Verification failed');
+        }
+
+        return NextResponse.json({ message: "Email verified successfully" });
     } catch (error: any) {
-        return NextResponse.json({ message: error.message, error: true }, { status: 500 });
+        return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }

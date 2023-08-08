@@ -6,7 +6,7 @@ const VerifyEmail = () => {
 
     const [token, setToken] = useState();
     const [verified, setVerified] = useState(false);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState();
     const router = useRouter();
 
     useEffect(() => {
@@ -18,13 +18,12 @@ const VerifyEmail = () => {
         const verifyUserEmail = async () => {
             try {
                 const response = await axios.post('/api/users/verifyemail', { token });
-                if (response && response.data.success) {
-                    setVerified(true);
+                if (response && response.data.message) {
+                    setVerified(response.data.message);
                     router.replace('/login');
                 }
             } catch (error: any) {
-                setError(error.message);
-                console.error(error.message);
+                setError(error.response.data.message);
             }
         }
         if (token) {
@@ -36,16 +35,16 @@ const VerifyEmail = () => {
         <>
             <main className='grow break-all flex justify-center items-center flex-col'>
                 <h1>Verify Email</h1>
-                <h2>{token ? `${token}` : 'no token'}</h2>
+
                 {verified && (
                     <div>
-                        <h2 className='text-2xl bg-green-500 text-black'>Email Verified</h2>
+                        <h2 className='text-2xl bg-green-500 px-4 py-2 rounded-3xl text-white'>{verified}</h2>
                     </div>
                 )}
 
                 {error && (
                     <div>
-                        <h2 className='text-2xl bg-red-500 text-black'>{error}</h2>
+                        <h2 className='text-2xl bg-red-500 px-4 py-2 rounded-3xl text-white'>{error}</h2>
                     </div>
                 )}
             </main>

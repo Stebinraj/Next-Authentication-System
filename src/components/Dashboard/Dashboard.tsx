@@ -13,7 +13,8 @@ const Dashboard = () => {
         try {
             e.preventDefault();
             const response = await axios.get('/api/users/logout');
-            if (response && response.data.success) {
+            if (response && response.data.message) {
+                toast.success(response.data.message);
                 router.replace('/login');
             }
         } catch (error: any) {
