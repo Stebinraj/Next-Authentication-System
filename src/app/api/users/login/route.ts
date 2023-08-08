@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { connectMongoDB } from "@/dbConfig/connectMongoDB";
+import { sendMail } from "@/helpers/mailer";
 
 export const POST = async (request: NextRequest) => {
     try {
@@ -38,6 +39,11 @@ export const POST = async (request: NextRequest) => {
             throw errors;
         }
 
+        if (!user.isVerified) {
+            await sendMail(user.email, process.env.EMAIL_TYPE_VERIFY, user._id);
+            throw new Error('Verify your account check your email');
+        }
+
         const tokenData = {
             _id: user._id,
             email: user.email
@@ -49,9 +55,7 @@ export const POST = async (request: NextRequest) => {
             throw new Error('Login Data Encryption failed');
         }
 
-        const response = NextResponse.json({
-            message: 'Login Successfully', success: true
-        });
+        const response = NextResponse.json({ message: 'Login Successfully' });
 
         response.cookies.set('token', token, {
             httpOnly: true, expires: Date.now() + 43200000,

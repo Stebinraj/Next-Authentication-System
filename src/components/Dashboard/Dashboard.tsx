@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { FormEvent, useState } from 'react'
+import { toast } from 'react-hot-toast';
 
 const Dashboard = () => {
 
@@ -9,10 +10,14 @@ const Dashboard = () => {
     const router = useRouter();
 
     const logout = async (e: FormEvent) => {
-        e.preventDefault();
-        const response = await axios.get('/api/users/logout');
-        if (response && response.data.success) {
-            router.replace('/login');
+        try {
+            e.preventDefault();
+            const response = await axios.get('/api/users/logout');
+            if (response && response.data.success) {
+                router.replace('/login');
+            }
+        } catch (error: any) {
+            toast.error(error.response.data.message);
         }
     }
 

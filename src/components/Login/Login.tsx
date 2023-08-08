@@ -32,7 +32,7 @@ const Login = () => {
             e.preventDefault();
             const response = await axios.post('/api/users/login', formData);
             if (response && response.data.success) {
-                toast.success('Login Successfully');
+                toast.success(response.data.message);
                 clearForm();
                 router.replace('/dashboard');
             }

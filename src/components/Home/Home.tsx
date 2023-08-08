@@ -3,6 +3,7 @@ import SignUpForm from './SignUpForm'
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const Home = () => {
 
@@ -21,8 +22,8 @@ const Home = () => {
     };
 
     const [formData, setFormData] = useState(initialFormState);
-
     const [formErrors, setFormErrors] = useState(initialFormErrors);
+    const router = useRouter();
 
     const clearForm = async () => {
         setFormData(initialFormState);
@@ -33,9 +34,10 @@ const Home = () => {
         try {
             e.preventDefault();
             const response = await axios.post('/api/users/signup', formData);
-            if (response && response.data.success) {
-                toast.success('Form Submitted');
+            if (response && response.data.message) {
+                toast.success(response.data.message);
                 clearForm();
+                router.replace('/login');
             }
         } catch (error: any) {
             setFormErrors(initialFormErrors);

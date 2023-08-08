@@ -11,6 +11,9 @@ export const POST = async (request: NextRequest) => {
 
         const { userName, email, phoneNumber, password } = await request.json();
 
+        const existingEmail = await userModel.findOne({ email });
+        const existingPhoneNumber = await userModel.findOne({ phoneNumber });
+
         if (!userName) {
             errors.push({ message: 'UserName Required', field: 'userName' });
         }
@@ -26,9 +29,6 @@ export const POST = async (request: NextRequest) => {
         if (!password) {
             errors.push({ message: 'Password Required', field: 'password' });
         }
-
-        const existingEmail = await userModel.findOne({ email });
-        const existingPhoneNumber = await userModel.findOne({ phoneNumber });
 
         if (existingEmail) {
             errors.push({ message: 'Email Already Exists', field: 'email' });
@@ -59,12 +59,12 @@ export const POST = async (request: NextRequest) => {
         const savedUser = await newUser.save();
 
         if (!savedUser) {
-            throw new Error('SignUp Data Not Saved');
+            throw new Error('User Data Not Saved');
         }
 
         await sendMail(savedUser.email, process.env.EMAIL_TYPE_VERIFY, savedUser._id);
 
-        return NextResponse.json({ message: "User created successfully", success: true });
+        return NextResponse.json({ message: "User created successfully" });
     } catch (error: any) {
         return NextResponse.json({ message: error.message || error }, { status: 500 });
     }
