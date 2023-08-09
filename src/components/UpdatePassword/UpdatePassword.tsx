@@ -32,13 +32,27 @@ const UpdatePassword = () => {
                 token: token,
                 password: formData.password
             });
-            if (response && response.data.success) {
-                toast.success('Password Updated Successfully');
+            if (response && response.data.message) {
+                toast.success(response.data.message);
                 clearForm();
                 router.push('/login');
             }
         } catch (error: any) {
-            console.error(error.message);
+            setFormErrors(initialFormErrors);
+            if (error.response && Array.isArray(error.response.data.message)) {
+                for (let i of error.response.data.message) {
+                    let { message, field } = i;
+                    setFormErrors((formErrors) => ({
+                        ...formErrors,
+                        [field]: {
+                            message: message, inputClass: 'is-invalid',
+                            feedbackClass: 'invalid-feedback'
+                        }
+                    }));
+                }
+            } else {
+                toast.error(error.response.data.message);
+            }
         }
     }
 

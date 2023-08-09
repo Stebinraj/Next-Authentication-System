@@ -25,12 +25,26 @@ const ResetPassword = () => {
         try {
             e.preventDefault();
             const response = await axios.post('/api/users/resetpassword', formData);
-            if (response && response.data.success) {
-                toast.success('Password reset mailed Successfully');
+            if (response && response.data.message) {
+                toast.success(response.data.message);
                 clearForm();
             }
         } catch (error: any) {
-            console.error(error.message);
+            setFormErrors(initialFormErrors);
+            if (error.response && Array.isArray(error.response.data.message)) {
+                for (let i of error.response.data.message) {
+                    let { message, field } = i;
+                    setFormErrors((formErrors) => ({
+                        ...formErrors,
+                        [field]: {
+                            message: message, inputClass: 'is-invalid',
+                            feedbackClass: 'invalid-feedback'
+                        }
+                    }));
+                }
+            } else {
+                toast.error(error.response.data.message);
+            }
         }
     }
 
