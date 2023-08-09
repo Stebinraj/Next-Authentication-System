@@ -1,4 +1,5 @@
 import { connectMongoDB } from "@/dbConfig/connectMongoDB";
+import { sendMail } from "@/helpers/mailer";
 import userModel from "@/models/UserModel";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -12,13 +13,21 @@ export const POST = async (request: NextRequest) => {
             throw new Error('No token found');
         }
 
+        const findToken = await userModel.findOne({ verifyToken: token });
+
+        if (!findToken) {
+            throw new Error('Token expired');
+        }
+
         const user = await userModel.findOne({
-            verifyToken: token,
-            verifyTokenExpiry: { $gt: Date.now() }
+            verifyToken: findToken.verifyToken,
+            verifyTokenExpiry: { $gt: Date.now() },
+            isVerified: false
         });
 
         if (!user) {
-            throw new Error('Token invalid / expired');
+            await sendMail(findToken.email, process.env.EMAIL_TYPE_VERIFY, findToken._id);
+            throw new Error('Token expired check your email to verify');
         }
 
         user.isVerified = true;
