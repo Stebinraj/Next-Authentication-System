@@ -14,13 +14,13 @@ export const sendMail = async (email: any, emailType: any, userId: any) => {
             throw new Error('Error While Hashing Token');
         }
 
-        const { EMAIL_TYPE_VERIFY, EMAIL_TYPE_RESET, DOMAIN } = process.env
+        const { EMAIL_TYPE_VERIFY, EMAIL_TYPE_RESET, DOMAIN, VERIFY_TOKEN_EXPIRY, FORGOT_PASSWORD_TOKEN_EXPIRY } = process.env
 
         if (emailType === EMAIL_TYPE_VERIFY) {
             const verify = await userModel.findByIdAndUpdate(userId, {
                 $set: {
                     verifyToken: hashedToken,
-                    verifyTokenExpiry: Date.now() + 43200000
+                    verifyTokenExpiry: Date.now() + parseInt(VERIFY_TOKEN_EXPIRY!)
                 }
             }, {
                 new: true
@@ -32,7 +32,7 @@ export const sendMail = async (email: any, emailType: any, userId: any) => {
             const reset = await userModel.findByIdAndUpdate(userId, {
                 $set: {
                     forgotPasswordToken: hashedToken,
-                    forgotPasswordTokenExpiry: Date.now() + 43200000
+                    forgotPasswordTokenExpiry: Date.now() + parseInt(FORGOT_PASSWORD_TOKEN_EXPIRY!)
                 }
             }, {
                 new: true

@@ -39,7 +39,7 @@ export const POST = async (request: NextRequest) => {
             throw errors;
         }
 
-        if (!user.isVerified && user.verifyTokenExpiry > Date.now() + 43200000) {
+        if (!user.isVerified && Date.now() > user.verifyTokenExpiry) {
             await sendMail(user.email, process.env.EMAIL_TYPE_VERIFY, user._id);
             throw new Error('Verify your account check your email');
         } else if (!user.isVerified) {
