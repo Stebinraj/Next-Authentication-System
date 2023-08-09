@@ -37,7 +37,7 @@ const Home = () => {
             if (response && response.data.message) {
                 toast.success(response.data.message);
                 clearForm();
-                router.replace('/login');
+                router.push('/login');
             }
         } catch (error: any) {
             setFormErrors(initialFormErrors);

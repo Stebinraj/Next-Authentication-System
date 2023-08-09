@@ -20,7 +20,7 @@ const VerifyEmail = () => {
                 const response = await axios.post('/api/users/verifyemail', { token });
                 if (response && response.data.message) {
                     setVerified(response.data.message);
-                    router.replace('/login');
+                    router.push('/login');
                 }
             } catch (error: any) {
                 setError(error.response.data.message);

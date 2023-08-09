@@ -1,8 +1,7 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 
-export function middleware(request: NextRequest) {
+export const middleware = (request: NextRequest) => {
     try {
         const path = request.nextUrl.pathname;
         const isPublicPath = path === '/' || path === '/login' ||

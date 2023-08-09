@@ -35,7 +35,7 @@ const UpdatePassword = () => {
             if (response && response.data.success) {
                 toast.success('Password Updated Successfully');
                 clearForm();
-                router.replace('/login');
+                router.push('/login');
             }
         } catch (error: any) {
             console.error(error.message);

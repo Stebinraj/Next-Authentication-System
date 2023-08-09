@@ -68,6 +68,6 @@ export const sendMail = async (email: any, emailType: any, userId: any) => {
             throw new Error('Email Not Send');
         }
     } catch (error: any) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 }

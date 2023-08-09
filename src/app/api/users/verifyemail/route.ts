@@ -18,7 +18,7 @@ export const POST = async (request: NextRequest) => {
         });
 
         if (!user) {
-            throw new Error('Token invalid');
+            throw new Error('Token invalid / expired');
         }
 
         user.isVerified = true;

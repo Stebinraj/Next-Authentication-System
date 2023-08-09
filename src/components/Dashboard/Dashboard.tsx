@@ -15,7 +15,7 @@ const Dashboard = () => {
             const response = await axios.get('/api/users/logout');
             if (response && response.data.message) {
                 toast.success(response.data.message);
-                router.replace('/login');
+                router.push('/login');
             }
         } catch (error: any) {
             toast.error(error.response.data.message);
@@ -23,10 +23,15 @@ const Dashboard = () => {
     }
 
     const getUserId = async (e: FormEvent) => {
-        e.preventDefault();
-        const response = await axios.get('/api/users/id');
-        if (response && response.data.success) {
-            setId(response.data.id);
+        try {
+            e.preventDefault();
+            const response = await axios.get('/api/users/id');
+            if (response && response.data.id) {
+                setId(response.data.id);
+            }
+        } catch (error: any) {
+            setId(error.response.data.message);
+            toast.error(error.response.data.message);
         }
     }
 
