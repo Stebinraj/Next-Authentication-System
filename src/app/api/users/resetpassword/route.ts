@@ -2,6 +2,7 @@ import { connectMongoDB } from '@/dbConfig/connectMongoDB';
 import { sendMail } from '@/helpers/mailer';
 import userModel from '@/models/UserModel';
 import { NextRequest, NextResponse } from 'next/server'
+import emailValidator from 'email-validator';
 
 export const POST = async (request: NextRequest) => {
     try {
@@ -13,6 +14,11 @@ export const POST = async (request: NextRequest) => {
 
         if (!email) {
             errors.push({ message: 'Email Required', field: 'email' });
+        } else if (!emailValidator.validate(email)) {
+            errors.push({ message: 'Enter valid email', field: 'email' });
+        }
+
+        if (errors.length > 0) {
             throw errors;
         }
 

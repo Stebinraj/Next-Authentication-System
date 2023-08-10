@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 import userModel from "@/models/UserModel";
 import bcrypt from 'bcrypt';
 import { sendMail } from "@/helpers/mailer";
+import { passwordPattern1, passwordPattern2, passwordPattern3 } from "../login/route";
 
 export const POST = async (request: NextRequest) => {
     try {
@@ -17,7 +18,14 @@ export const POST = async (request: NextRequest) => {
         }
 
         if (!password) {
-            errors.push({ message: 'Password required', field: 'password' });
+            errors.push({ message: 'Password Required', field: 'password' });
+        } else if (!passwordPattern1.validate(password) &&
+            !passwordPattern2.validate(password) &&
+            !passwordPattern3.validate(password)) {
+            errors.push({ message: 'Enter valid password', field: 'password' });
+        }
+
+        if (errors.length > 0) {
             throw errors;
         }
 

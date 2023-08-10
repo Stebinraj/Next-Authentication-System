@@ -26,7 +26,7 @@ const SignUpForm = ({ submitForm, formData, setFormData, formErrors }: any) => {
 
                         <div className="form-group mb-2 col-12 col-md-6">
                             <label htmlFor="phonenumber" className='form-label'>Phone Number</label>
-                            <input type="number" className={`form-control ${formErrors.phoneNumber.inputClass || ''}`} onChange={(e) => { setFormData({ ...formData, phoneNumber: e.target.value.trim() }) }} value={formData.phoneNumber} />
+                            <input type='text' className={`form-control ${formErrors.phoneNumber.inputClass || ''}`} onChange={(e) => { setFormData({ ...formData, phoneNumber: e.target.value.trim().replace(/[^0-9]/g, '') }) }} value={formData.phoneNumber} />
                             {formErrors.phoneNumber.message && (
                                 <small className={formErrors.phoneNumber.feedbackClass}>{formErrors.phoneNumber.message}</small>
                             )}

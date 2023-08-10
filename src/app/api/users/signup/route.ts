@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from 'bcrypt';
 import { sendMail } from "@/helpers/mailer";
 import { connectMongoDB } from "@/dbConfig/connectMongoDB";
+import emailValidator from 'email-validator';
+import { passwordPattern1, passwordPattern2, passwordPattern3 } from "../login/route";
 
 export const POST = async (request: NextRequest) => {
     try {
@@ -20,14 +22,24 @@ export const POST = async (request: NextRequest) => {
 
         if (!email) {
             errors.push({ message: 'Email Required', field: 'email' });
+        } else if (!emailValidator.validate(email)) {
+            errors.push({ message: 'Enter valid email', field: 'email' });
         }
+
+        const phoneNoPattern = /^\d{10}$/;
 
         if (!phoneNumber) {
             errors.push({ message: 'Phone Number Required', field: 'phoneNumber' });
+        } else if (phoneNumber.length < 10 || phoneNumber.length > 10 || !phoneNoPattern.test(phoneNumber)) {
+            errors.push({ message: 'Enter valid 10 digit phone number', field: 'phoneNumber' });
         }
 
         if (!password) {
             errors.push({ message: 'Password Required', field: 'password' });
+        } else if (!passwordPattern1.validate(password) &&
+            !passwordPattern2.validate(password) &&
+            !passwordPattern3.validate(password)) {
+            errors.push({ message: 'Enter valid password', field: 'password' });
         }
 
         if (existingEmail) {

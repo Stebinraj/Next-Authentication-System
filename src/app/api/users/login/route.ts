@@ -4,6 +4,12 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { connectMongoDB } from "@/dbConfig/connectMongoDB";
 import { sendMail } from "@/helpers/mailer";
+import emailValidator from 'email-validator';
+import { passwordPattern } from "@/helpers/passwordPattern";
+
+export const passwordPattern1 = passwordPattern(8, 20, 1, 1, 1);
+export const passwordPattern2 = passwordPattern(8, 20, 1, 1, 1, 1);
+export const passwordPattern3 = passwordPattern(10, 20, 1, 1, 1, 1);
 
 export const POST = async (request: NextRequest) => {
     try {
@@ -15,10 +21,16 @@ export const POST = async (request: NextRequest) => {
 
         if (!email) {
             errors.push({ message: 'Email Required', field: 'email' });
+        } else if (!emailValidator.validate(email)) {
+            errors.push({ message: 'Enter valid email', field: 'email' });
         }
 
         if (!password) {
             errors.push({ message: 'Password Required', field: 'password' });
+        } else if (!passwordPattern1.validate(password) &&
+            !passwordPattern2.validate(password) &&
+            !passwordPattern3.validate(password)) {
+            errors.push({ message: 'Enter valid password', field: 'password' });
         }
 
         if (errors.length > 0) {

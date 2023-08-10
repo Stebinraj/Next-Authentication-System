@@ -58,7 +58,7 @@ const UpdatePassword = () => {
 
     useEffect(() => {
         const urlToken: any = new URLSearchParams(window.location.search).get('token');
-        setToken(urlToken || '');
+        setToken(urlToken);
     }, [token]);
 
 
