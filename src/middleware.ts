@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import jwt from 'jsonwebtoken';
+const jwt = import('jsonwebtoken');
 
-export const middleware = (request: NextRequest) => {
+export const middleware = async (request: NextRequest) => {
     try {
         const path = request.nextUrl.pathname;
         const isPublicPath = path === '/' || path === '/login' ||
@@ -9,7 +9,7 @@ export const middleware = (request: NextRequest) => {
 
         const token: any = request.cookies.get('token')?.value;
 
-        const verifiedToken: any = jwt.decode(token);
+        const verifiedToken: any = (await jwt).decode(token);
 
         if (isPublicPath && verifiedToken) {
             return NextResponse.redirect(new URL('/dashboard', request.nextUrl));
