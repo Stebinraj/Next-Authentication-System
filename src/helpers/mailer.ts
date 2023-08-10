@@ -14,7 +14,10 @@ export const sendMail = async (email: any, emailType: any, userId: any) => {
             throw new Error('Error While Hashing Token');
         }
 
-        const { EMAIL_TYPE_VERIFY, EMAIL_TYPE_RESET, DOMAIN, VERIFY_TOKEN_EXPIRY, FORGOT_PASSWORD_TOKEN_EXPIRY } = process.env
+        const { EMAIL_TYPE_VERIFY, EMAIL_TYPE_RESET,
+            DOMAIN, VERIFY_TOKEN_EXPIRY, FORGOT_PASSWORD_TOKEN_EXPIRY,
+            EMAIL_USERNAME, EMAIL_PASSWORD
+        } = process.env
 
         if (emailType === EMAIL_TYPE_VERIFY) {
             const verify = await userModel.findByIdAndUpdate(userId, {
@@ -43,11 +46,10 @@ export const sendMail = async (email: any, emailType: any, userId: any) => {
         }
 
         const transport = nodemailer.createTransport({
-            host: "sandbox.smtp.mailtrap.io",
-            port: 2525,
+            service: "gmail",
             auth: {
-                user: "21083a5625e748",
-                pass: "b19a00cb5551f1"
+                user: EMAIL_USERNAME,
+                pass: EMAIL_PASSWORD
             }
         });
 
@@ -55,8 +57,9 @@ export const sendMail = async (email: any, emailType: any, userId: any) => {
             from: 'stebinraj22@gmail.com',
             to: email,
             subject: emailType === EMAIL_TYPE_VERIFY ? "Verify your email" : EMAIL_TYPE_RESET && "Reset your password",
-            html: `<p>Click <a href=${emailType === EMAIL_TYPE_VERIFY ? `${DOMAIN}/verifyemail?token=${hashedToken}`
-                : emailType === EMAIL_TYPE_RESET && `${DOMAIN}/updatepassword?token=${hashedToken}`} replace={true}>here
+            html:
+                `<p>Click <a href=${emailType === EMAIL_TYPE_VERIFY ? `${DOMAIN}/verifyemail?token=${hashedToken}`
+                    : emailType === EMAIL_TYPE_RESET && `${DOMAIN}/updatepassword?token=${hashedToken}`} replace={true}>here
                 </a>to ${emailType === EMAIL_TYPE_VERIFY ? 'Verify'
                     : emailType === EMAIL_TYPE_RESET && 'Reset'}
                 </p>`

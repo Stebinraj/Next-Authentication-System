@@ -6,7 +6,7 @@ const SignUpForm = ({ submitForm, formData, setFormData, formErrors }: any) => {
             <div className="card col-12 col-md-8 col-lg-6">
                 <div className="card-body">
                     <form className='row' onSubmit={submitForm}>
-                        <h3 className='text-blue-700 text-center'>SignUp</h3>
+                        <h3 className='text-blue-500 text-center'>SignUp</h3>
 
                         <div className="form-group mb-2 col-12 col-md-6">
                             <label htmlFor="username" className='form-label'>Username</label>
@@ -41,7 +41,7 @@ const SignUpForm = ({ submitForm, formData, setFormData, formErrors }: any) => {
                         </div>
 
                         <div className="form-group text-center mt-2">
-                            <button type='submit' className='bg-blue-700 text-white px-4 py-2 rounded-3xl'>Submit</button>
+                            <button type='submit' className='bg-blue-500 text-white px-4 py-2 rounded-3xl'>Submit</button>
                         </div>
                     </form>
                 </div>

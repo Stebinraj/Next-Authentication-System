@@ -34,7 +34,7 @@ const VerifyEmail = () => {
     return (
         <>
             <main className='grow break-all flex justify-center items-center flex-col'>
-                <h1>Verify Email</h1>
+                <h1 className='text-blue-700'>Verify Email</h1>
 
                 {verified && (
                     <div>
