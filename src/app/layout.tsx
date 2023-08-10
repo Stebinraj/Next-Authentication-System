@@ -1,10 +1,8 @@
-'use client';
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Toaster } from 'react-hot-toast';
-import { useEffect } from 'react';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,11 +16,6 @@ export default function RootLayout({
 }: {
     children: React.ReactNode
 }) {
-
-    useEffect(() => {
-        import('bootstrap/dist/js/bootstrap.bundle'!);
-    }, [])
-
     return (
         <html lang="en">
             <body className={inter.className}>
