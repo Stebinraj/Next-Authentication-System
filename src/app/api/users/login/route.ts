@@ -71,10 +71,13 @@ export const POST = async (request: NextRequest) => {
 
         const response = NextResponse.json({ message: 'Login Successfully' });
 
+        const { COOKIES_PATH, DOMAIN } = process.env
+
         response.cookies.set('token', token, {
             httpOnly: true, expires: Date.now() + 43200000,
             secure: true, sameSite: 'strict',
-            path: '/'
+            path: COOKIES_PATH,
+            domain: DOMAIN
         });
 
         return response;
