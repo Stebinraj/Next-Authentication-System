@@ -5,7 +5,7 @@ export const middleware = async (request: NextRequest) => {
     try {
         const path = request.nextUrl.pathname;
 
-        const isPublicPath = path === '/login' ||
+        const isPublicPath = path === '/' || path === '/login' ||
             path === '/verifyemail' || path === '/resetpassword' || path === '/updatepassword';
 
         const token: any = request.cookies.get('token')?.value;
