@@ -36,6 +36,8 @@ export const config = {
         '/login',
         '/verifyemail',
         '/resetpassword',
-        '/updatepassword'
+        '/updatepassword',
+        '/api/users/id',
+        '/api/users/logout'
     ]
 };

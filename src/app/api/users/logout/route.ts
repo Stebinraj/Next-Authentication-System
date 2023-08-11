@@ -3,9 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const GET = (request:NextRequest) => {
     try {
         request.cookies.clear();
-        const response = NextResponse.json({ message: 'Logout Succcessfully' });
-        response.cookies.delete('token');
-        return response;
+        return NextResponse.json({ message: 'Logout Succcessfully' });
     } catch (error: any) {
         return NextResponse.json({ message: error.message }, { status: 500 });
     }
