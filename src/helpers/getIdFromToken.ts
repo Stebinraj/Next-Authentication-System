@@ -6,7 +6,6 @@ export const getIdFromToken = (request: NextRequest) => {
         const encodedToken: any = request.cookies.get('token')?.value;
 
         if (!encodedToken) {
-            request.cookies.clear();
             throw new Error('Token not found');
         }
 
@@ -14,7 +13,6 @@ export const getIdFromToken = (request: NextRequest) => {
             const decodedToken: any = jwt.verify(encodedToken, process.env.TOKEN_SECRET!);
             return decodedToken._id;
         } catch (error: any) {
-            request.cookies.clear();
             throw new Error('Invalid Token');
         }
 
