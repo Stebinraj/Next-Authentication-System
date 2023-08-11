@@ -4,7 +4,7 @@ export const GET = (request: NextRequest) => {
     try {
         const cookies = request.cookies.getAll();
 
-        const token = request.cookies.get('token')?.value
+        const token = request.cookies.get('token')?.name
 
         const response = NextResponse.json({ message: 'Logout Succcessfully'});
 
