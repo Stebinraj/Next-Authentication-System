@@ -1,10 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export const GET = () => {
+export const GET = (request: NextRequest) => {
     try {
-        const response = NextResponse.json({ message: 'Logout Succcessfully' });
-        response.cookies.set('token', '', { expires: new Date(0) });
-        return response;
+        request.cookies.set('token', '');
+        return NextResponse.json({ message: 'Logout Succcessfully' });
     } catch (error: any) {
         return NextResponse.json({ message: error.message }, { status: 500 });
     }

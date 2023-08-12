@@ -10,18 +10,18 @@ export const middleware = async (request: NextRequest) => {
 
         const token: any = request.cookies.get('token')?.value;
 
-        // try {
-        // await jwtVerify(token, new TextEncoder().encode(process.env.TOKEN_SECRET));
+        try {
+            await jwtVerify(token, new TextEncoder().encode(process.env.TOKEN_SECRET));
 
-        if (isPublicPath && token) {
-            return NextResponse.redirect(new URL('/dashboard', request.nextUrl));
+            if (isPublicPath) {
+                return NextResponse.redirect(new URL('/dashboard', request.nextUrl));
+            }
+        } catch (error: any) {
+            request.cookies.clear();
+            if (!isPublicPath) {
+                return NextResponse.redirect(new URL('/', request.nextUrl));
+            }
         }
-        // } catch (error: any) {
-        //     request.cookies.clear();
-        if (!isPublicPath && !token) {
-            return NextResponse.redirect(new URL('/', request.nextUrl));
-        }
-        // }
 
     } catch (error: any) {
         request.cookies.clear();
