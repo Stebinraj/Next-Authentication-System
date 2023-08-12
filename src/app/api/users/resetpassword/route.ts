@@ -1,14 +1,14 @@
-import { connectMongoDB } from '@/dbConfig/connectMongoDB';
 import { sendMail } from '@/helpers/mailer';
 import userModel from '@/models/UserModel';
 import { NextRequest, NextResponse } from 'next/server'
 import emailValidator from 'email-validator';
+import { connectMongoDB } from '@/dbConfig/connectMongoDB';
+
+connectMongoDB();
 
 export const POST = async (request: NextRequest) => {
     try {
         const errors: any[] = [];
-
-        await connectMongoDB();
 
         const { email } = await request.json();
 

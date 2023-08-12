@@ -2,14 +2,15 @@ import userModel from "@/models/UserModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from 'bcrypt';
 import { sendMail } from "@/helpers/mailer";
-import { connectMongoDB } from "@/dbConfig/connectMongoDB";
 import emailValidator from 'email-validator';
 import { passwordPattern1, passwordPattern2, passwordPattern3 } from "../login/route";
+import { connectMongoDB } from "@/dbConfig/connectMongoDB";
+
+connectMongoDB();
 
 export const POST = async (request: NextRequest) => {
     try {
         const errors: any[] = [];
-        await connectMongoDB();
 
         const { userName, email, phoneNumber, password } = await request.json();
 

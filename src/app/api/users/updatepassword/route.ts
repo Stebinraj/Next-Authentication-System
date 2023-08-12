@@ -5,11 +5,11 @@ import bcrypt from 'bcrypt';
 import { sendMail } from "@/helpers/mailer";
 import { passwordPattern1, passwordPattern2, passwordPattern3 } from "../login/route";
 
+connectMongoDB();
+
 export const POST = async (request: NextRequest) => {
     try {
         const errors: any[] = [];
-
-        await connectMongoDB();
 
         const { token, password } = await request.json();
 

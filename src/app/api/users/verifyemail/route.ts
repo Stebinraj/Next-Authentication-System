@@ -3,10 +3,10 @@ import { sendMail } from "@/helpers/mailer";
 import userModel from "@/models/UserModel";
 import { NextRequest, NextResponse } from "next/server";
 
+connectMongoDB();
+
 export const POST = async (request: NextRequest) => {
     try {
-        await connectMongoDB();
-
         const { token } = await request.json();
 
         if (!token) {

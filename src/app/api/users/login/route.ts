@@ -2,19 +2,19 @@ import userModel from "@/models/UserModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { connectMongoDB } from "@/dbConfig/connectMongoDB";
 import { sendMail } from "@/helpers/mailer";
 import emailValidator from 'email-validator';
 import { passwordPattern } from "@/helpers/passwordPattern";
+import { connectMongoDB } from "@/dbConfig/connectMongoDB";
 
 export const passwordPattern1 = passwordPattern(8, 20, 1, 1, 1);
 export const passwordPattern2 = passwordPattern(8, 20, 1, 1, 1, 1);
 export const passwordPattern3 = passwordPattern(10, 20, 1, 1, 1, 1);
 
+connectMongoDB();
+
 export const POST = async (request: NextRequest) => {
     try {
-        await connectMongoDB();
-
         const errors: any[] = [];
 
         const { email, password } = await request.json();
