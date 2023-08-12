@@ -8,9 +8,9 @@ export const middleware = async (request: NextRequest) => {
         const isPublicPath = path === '/' || path === '/login' ||
             path === '/verifyemail' || path === '/resetpassword' || path === '/updatepassword';
 
-        const token: any = request.cookies.get('token')?.value;
-
         try {
+            const token: any = request.cookies.get('token')?.value;
+
             await jwtVerify(token, new TextEncoder().encode(process.env.TOKEN_SECRET));
 
             if (isPublicPath) {
