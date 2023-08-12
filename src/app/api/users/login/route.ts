@@ -73,7 +73,9 @@ export const POST = async (request: NextRequest) => {
 
         response.cookies.set('token', token, {
             httpOnly: true, expires: Date.now() + 43200000,
-            secure: true, sameSite: 'strict'
+            secure: true, sameSite: 'strict',
+            path: process.env.TOKEN_PATH,
+            domain: process.env.DOMAIN
         });
 
         return response;
