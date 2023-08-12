@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = (request:NextRequest) => {
+export const GET = (request: NextRequest) => {
     try {
-        request.cookies.clear();
-        return NextResponse.json({ message: 'Logout Succcessfully' });
+        const cookies = request.cookies.getAll();
+        const response = NextResponse.json({ message: 'Logout Succcessfully' });
+        for (const i of cookies) {
+            response.cookies.set(i.name, '', { expires: new Date(0) });
+        }
+        return response;
     } catch (error: any) {
         return NextResponse.json({ message: error.message }, { status: 500 });
     }
