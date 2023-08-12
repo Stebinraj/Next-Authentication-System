@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = (request: NextRequest) => {
+export const POST = (request: NextRequest) => {
     try {
         request.cookies.clear();
         return NextResponse.json({ message: 'Logout Succcessfully' });

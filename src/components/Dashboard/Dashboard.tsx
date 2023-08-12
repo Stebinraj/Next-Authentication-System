@@ -12,7 +12,7 @@ const Dashboard = () => {
     const logout = async (e: FormEvent) => {
         try {
             e.preventDefault();
-            const response = await axios.get('/api/users/logout');
+            const response = await axios.post('/api/users/logout');
             if (response && response.data.message) {
                 toast.success(response.data.message);
                 router.push('/login');
