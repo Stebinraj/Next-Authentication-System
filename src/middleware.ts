@@ -1,6 +1,5 @@
 import { jwtVerify } from 'jose';
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 
 export const middleware = async (request: NextRequest) => {
     try {
@@ -9,7 +8,7 @@ export const middleware = async (request: NextRequest) => {
         const isPublicPath = path === '/' || path === '/login' ||
             path === '/verifyemail' || path === '/resetpassword' || path === '/updatepassword';
 
-        const token: any = cookies().get('token')?.value;
+        const token: any = request.cookies.get('token')?.value;
 
         try {
             await jwtVerify(token, new TextEncoder().encode(process.env.TOKEN_SECRET));
@@ -18,14 +17,12 @@ export const middleware = async (request: NextRequest) => {
                 return NextResponse.redirect(new URL('/dashboard', request.nextUrl));
             }
         } catch (error: any) {
-            cookies().delete('token');
             if (!isPublicPath) {
                 return NextResponse.redirect(new URL('/', request.nextUrl));
             }
         }
 
     } catch (error: any) {
-        cookies().delete('token');
         return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }
