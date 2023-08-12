@@ -40,7 +40,7 @@ export const POST = async (request: NextRequest) => {
         } else if (!passwordPattern1.validate(password) &&
             !passwordPattern2.validate(password) &&
             !passwordPattern3.validate(password)) {
-            errors.push({ message: 'Enter valid password', field: 'password' });
+            errors.push({ message: 'Password must be between 8 and 20 characters long, contain at least 1 uppercase letter, 1 lowercase letter, 1 number, 1 symbols (optional)', field: 'password' });
         }
 
         if (existingEmail) {
