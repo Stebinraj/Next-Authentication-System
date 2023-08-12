@@ -2,11 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = (request: NextRequest) => {
     try {
-        const cookies = request.cookies.getAll();
+        request.cookies.clear();
         const response = NextResponse.json({ message: 'Logout Succcessfully' });
-        for (const i of cookies) {
-            response.cookies.set(i.name, '', { expires: new Date(0), path: '/dashboard' });
-        }
+        response.cookies.delete('token');
         return response;
     } catch (error: any) {
         return NextResponse.json({ message: error.message }, { status: 500 });
