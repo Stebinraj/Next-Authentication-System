@@ -15,7 +15,6 @@ const Dashboard = () => {
             const response = await axios.get('/api/users/logout');
             if (response && response.data.message) {
                 toast.success(response.data.message);
-                window.location.reload();
                 router.push('/login');
             }
         } catch (error: any) {
