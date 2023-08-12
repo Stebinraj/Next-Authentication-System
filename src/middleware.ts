@@ -17,14 +17,14 @@ export const middleware = async (request: NextRequest) => {
                 return NextResponse.redirect(new URL('/dashboard', request.nextUrl));
             }
         } catch (error: any) {
-            request.cookies.clear();
+            // request.cookies.clear();
             if (!isPublicPath) {
                 return NextResponse.redirect(new URL('/', request.nextUrl));
             }
         }
 
     } catch (error: any) {
-        request.cookies.clear();
+        // request.cookies.clear();
         return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }
